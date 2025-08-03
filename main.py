@@ -2,7 +2,7 @@ import sys
 import subprocess
 
 required_modules = ["tkinter", "pandas", "openpyxl", "json"]
-
+saved_ranks = {}  # (college, branch) => rank string
 missing = []
 for mod in required_modules:
     try:
@@ -11,8 +11,6 @@ for mod in required_modules:
             from tkinter import filedialog, ttk, messagebox
         elif mod == "pandas":
             import pandas as pd
-        elif mod == "openpyxl":
-            import openpyxl
         elif mod == "json":
             import json
     except ImportError:
@@ -122,14 +120,22 @@ def load_json_file():
         messagebox.showerror("Error", f"Failed to load JSON file:\n{str(e)}")
 
 def refresh_gui(branch_code):
+    # Save existing GUI entry values into saved_ranks
+    for (college, branch), entry in rank_entries.items():
+        saved_ranks[(college, branch)] = entry.get()
+
+    # Clear GUI widgets
     for widget in scrollable_frame.winfo_children():
         widget.destroy()
+
+    rank_entries.clear()
 
     row_idx = 0
     for college, branches in current_data.items():
         filtered = [b for b in branches if branch_code == "ALL" or get_branch_code(b) == branch_code]
         if not filtered:
             continue
+
         college_label = ttk.Label(scrollable_frame, text=college, font=("Helvetica", 14, "bold"))
         college_label.grid(row=row_idx, column=0, sticky="w", padx=10, pady=(10, 0))
         row_idx += 1
@@ -138,7 +144,12 @@ def refresh_gui(branch_code):
             ttk.Label(scrollable_frame, text=branch, width=70).grid(row=row_idx, column=0, sticky="w", padx=30, pady=2)
             entry = ttk.Entry(scrollable_frame, width=10)
             entry.grid(row=row_idx, column=1, sticky="w", padx=10)
-            rank_entries[(college, branch)] = entry
+
+            key = (college, branch)
+            if key in saved_ranks:
+                entry.insert(0, saved_ranks[key])  # Restore previous value
+
+            rank_entries[key] = entry
             row_idx += 1
 
 def main_gui():
