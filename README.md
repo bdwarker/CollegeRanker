@@ -1,1 +1,1 @@
-# College Ranker 
+# CollegeRanker 
