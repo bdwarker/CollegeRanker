@@ -1,7 +1,7 @@
 import sys
 import subprocess
 
-required_modules = ["tkinter", "pandas", "openpyxl", "json"]
+required_modules = ["tkinter", "pandas", "json", "ttkthemes"]
 saved_ranks = {}  # (college, branch) => rank string
 missing = []
 for mod in required_modules:
@@ -13,6 +13,8 @@ for mod in required_modules:
             import pandas as pd
         elif mod == "json":
             import json
+        elif mod == "ttkthemes":
+            from ttkthemes import ThemedTk
     except ImportError:
         missing.append(mod)
 
@@ -155,7 +157,7 @@ def refresh_gui(branch_code):
 def main_gui():
     global selected, scrollable_frame
 
-    root = tk.Tk()
+    root = ThemedTk(theme="adapta")  # Try 'breeze', 'radiance', 'plastik', 'arc', etc.
     root.title("College Ranking System")
     root.geometry("1200x750")
     root.resizable(True, True)
