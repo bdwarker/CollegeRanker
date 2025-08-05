@@ -131,8 +131,6 @@ Once you’ve done ranking, click the **"Export to Excel"** button (top-right co
 
 Made by **Mohammed Shaan**
 
----
-
 ## 🫶 Support
 
 If you found this helpful, consider dropping a ⭐ or sharing it with your confused junior who doesn't know how to rank counseling choices 😌
